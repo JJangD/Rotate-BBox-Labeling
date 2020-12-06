@@ -1,15 +1,12 @@
 import math
 import cv2 as cv
 import copy
+import numpy as np
 from sys import float_info
 from enum import Enum,auto
 
-#rotate (x,y) by th degree
-
-
-# returns rect that has mouse click inside, closest one more if more than one
+# returns rect that was clicked by mouse, closest one more if more than one
 def mouse_in_rect(r_rect_stack, x, y):
-# TODO 깔끔하게
 
     maxx = 0
     maxy = 0
@@ -20,33 +17,28 @@ def mouse_in_rect(r_rect_stack, x, y):
 
     if len(r_rect_stack):
         for i, r in enumerate(r_rect_stack):
-            #parallel move
-            rp1_a = parallel(r[0], -r[0][0], -r[0][1])
-            rp2_a = parallel(r[1], -r[0][0], -r[0][1])
-            rp3_a = parallel(r[2], -r[0][0], -r[0][1])
-            rp4_a = parallel(r[3], -r[0][0], -r[0][1])
-            mp_a = parallel([x,y], -r[0][0], -r[0][1])
 
-            #rotate
-            l = math.sqrt(rp2_a[0]**2+rp2_a[1]**2)
-            costh = rp2_a[0]/l
-            sinth = rp2_a[1]/l
+            print('h')
 
-            rp1_b = rotate(rp1_a, costh, -sinth)
-            rp2_b = rotate(rp2_a, costh, -sinth)
-            rp3_b = rotate(rp3_a, costh, -sinth)
-            rp4_b= rotate(rp4_a, costh, -sinth)
-            mp_b = rotate(mp_a, costh, -sinth)
+            r = np.array(r)
+            r_roll = np.roll(r, -1, axis=0)
 
-            cur_dis = (mp_b[0] - x) ** 2 + (mp_b[1] - y) ** 2
+            mp = (r[0]+r[2])/2
 
-            maxx = rp3_b[0]
-            maxy = rp3_b[1]
 
-            if 0 < mp_b[0] < maxx and 0 < mp_b[1] < maxy:
+            abc = np.stack([r_roll[:, 1] - r[:, 1],
+                   r[:, 0] - r_roll[:, 0],
+                   r_roll[:, 0] * r[:, 1] - r_roll[:, 1] * r[:, 0]],axis=1)
+
+            val = abc[:,0] * x + abc[:,1] * y + abc[:,2]
+            print(all(val<0))
+
+            cur_dis = (mp[0] - x) ** 2 + (mp[1] - y) ** 2
+
+            if all(val<0):
 
                 if cur_dis < mindis:
-                    dis = cur_dis
+                    mindis = cur_dis
                     minidx = i
 
     if minidx != -1:
@@ -65,7 +57,7 @@ def rotate(p,costh,sinth):
     x = p[0]
     y = p[1]
 
-    x_o = x  *costh - y * sinth
+    x_o = x * costh - y * sinth
     y_o = y * costh + x * sinth
     return [x_o, y_o]
 
@@ -81,23 +73,19 @@ def fpoint2ipoint (p):
 
 
 def draw_rotate_rectangle(showimage,rp1,rp2,rp3,rp4,color,thickness):
-
-
     cv.line(showimage, rp1, rp2, color, thickness=thickness)
     cv.line(showimage, rp2, rp3, color, thickness=thickness)
     cv.line(showimage, rp3, rp4, color, thickness=thickness)
-    cv.line(showimage, rp4, rp1, color, thickness=thickness)
+    color2 = (0, 0, 255)
+    #blue line for the tail side
+    cv.line(showimage, rp4, rp1, color2, thickness=thickness)
 
 def xyxy2xyhw( label):
-#TODO 깔끔하게
 
     rp1 = label[0]
     rp2 = label[1]
     rp3 = label[2]
     rp4 = label[3]
-
-    print('here1')
-
 
     mx = (rp1[0] + rp3[0]) / 2
     my = (rp1[1] + rp3[1]) / 2
@@ -108,7 +96,6 @@ def xyxy2xyhw( label):
     rp3_a = parallel(rp3, -mx, -my)
     rp4_a = parallel(rp4, -mx, -my)
 
-    print('here2')
     # rotate
     l = math.sqrt((rp1_a[0] - rp2_a[0]) * (rp1_a[0] - rp2_a[0]) + (rp1_a[1] - rp2_a[1]) * (rp1_a[1] - rp2_a[1]))
     costh = (rp2_a[0] - rp1_a[0]) / l
@@ -119,32 +106,23 @@ def xyxy2xyhw( label):
     rp3_b = rotate(rp3_a, costh, -sinth)
     rp4_b = rotate(rp4_a, costh, -sinth)
 
-    print('here3')
     # parrallel
     s_rp1 = parallel(rp1_b, mx, my)
     s_rp2 = parallel(rp2_b, mx, my)
     s_rp3 = parallel(rp3_b, mx, my)
     s_rp4 = parallel(rp4_b, mx, my)
 
-    print('here4')
-    # th = math.degrees(math.atan(sinth/(costh+float_info.epsilon)))
-    #
-    # if th <= -90:
-    #     th = th+180
-
     th = math.degrees(math.atan2(sinth,costh))
 
+    # -180 ~ 180 -> 0 ~ 360
+    if th < -0.5:
+        th += 360
+
     # -180 ~ 180 -> -90 ~ 90
-    if th>90:
-        th = th-180
-    elif th<=-90:
-        th = th+180
-
-    print(sinth)
-    print(costh)
-    print(th)
-
-
+    # if th>90:
+    #     th = th-180
+    # elif th<=-90:
+    #     th = th+180
 
 
     x = int(round(mx))
@@ -246,31 +224,31 @@ class rot_rect():
     def get_rectangle(self):
         l = get_distance(self.mp1, self.mp2)
 
-        mp1_a = None
-        mp2_a = None
+        # mp1_a = None
+        # mp2_a = None
 
-        if self.mp2[0] < self.mp1[0]:
-            mp1_a = self.mp2
-            mp2_a = self.mp1
-        else:
-            mp1_a = self.mp1
-            mp2_a = self.mp2
+
+        # if self.mp2[0] < self.mp1[0]:
+        #     mp1_a = self.mp2
+        #     mp2_a = self.mp1
+        # else:
+        #     mp1_a = self.mp1
+        #     mp2_a = self.mp2
 
         mx = (self.mp1[0] + self.mp2[0]) / 2
         my = (self.mp1[1] + self.mp2[1]) / 2
 
         # parrallel move
-        mp1_a = parallel(mp1_a, -mx, -my)
-        mp2_a = parallel(mp2_a, -mx, -my)
+        mp1_a = parallel(self.mp1, -mx, -my)
+        mp2_a = parallel(self.mp2, -mx, -my)
         hp_a = parallel(self.hp, -mx, -my)
 
         # rotate
-        mp1_b = [-l / 2, 0]
-        mp2_b = [l / 2, 0]
-
         costh = 2 * mp2_a[0] / l
         sinth = 2 * mp2_a[1] / l
 
+        mp1_b = rotate(mp1_a, costh, -sinth)
+        mp2_b = rotate(mp2_a, costh, -sinth)
         hp_b = rotate(hp_a, costh, -sinth)
 
         self.h = abs(hp_b[1])
@@ -289,7 +267,6 @@ class rot_rect():
         self.rp2 = parallel(rp2_a, mx, my)
         self.rp3 = parallel(rp3_a, mx, my)
         self.rp4 = parallel(rp4_a, mx, my)
-
 
 class StrEnum(str,Enum):
     def _generate_next_value_(name,start,count,last_value):

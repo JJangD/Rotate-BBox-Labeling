@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a269317f-c389-422a-ad97-5dee5eb649b3" name="Default Changelist" comment="" />
+    <list default="true" id="a269317f-c389-422a-ad97-5dee5eb649b3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/THRCNN.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/Analysis-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/Analysis-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/EXE-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/EXE-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/PKG-00.pkg" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/PKG-00.pkg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/PKG-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/PKG-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/PYZ-00.pyz" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/PYZ-00.pyz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/PYZ-00.toc" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/PYZ-00.toc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/warn-gui.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/warn-gui.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/gui/xref-gui.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/gui/xref-gui.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/gui.exe" beforeDir="false" afterPath="$PROJECT_DIR$/dist/gui.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui.spec" beforeDir="false" afterPath="$PROJECT_DIR$/gui.spec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/util.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,24 +26,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-39">
-              <caret line="49" selection-start-line="49" selection-end-line="49" />
+            <state relative-caret-position="9430">
+              <caret line="423" column="27" selection-start-line="423" selection-start-column="24" selection-end-line="423" selection-end-column="27" />
               <folding>
-                <element signature="e#241#251#0" expanded="true" />
-                <element signature="e#1059#3963#0" />
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/util.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+            <state relative-caret-position="-2556">
+              <caret line="137" lean-forward="true" selection-start-line="137" selection-end-line="137" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -46,8 +61,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mouse</find>
-      <find>cv</find>
       <find>numpy</find>
       <find>F</find>
       <find>rot_rect</find>
@@ -76,7 +89,12 @@
       <find>[0]</find>
       <find>save</find>
       <find>if not</find>
+      <find>draw</find>
+      <find>min</find>
     </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -84,16 +102,16 @@
         <option value="$PROJECT_DIR$/qtpyimporterror.py" />
         <option value="$PROJECT_DIR$/getthr.py" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/util.py" />
         <option value="$PROJECT_DIR$/gui.py" />
+        <option value="$PROJECT_DIR$/util.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="993" />
-    <option name="y" value="36" />
-    <option name="width" value="1559" />
-    <option name="height" value="1280" />
+    <option name="x" value="1446" />
+    <option name="y" value="207" />
+    <option name="width" value="982" />
+    <option name="height" value="1148" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -101,20 +119,11 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="rotatelabeling" type="b2602c69:ProjectViewProjectNode" />
-              <item name="rotatelabeling" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -217,16 +226,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1021" y="87" width="1559" height="1280" extended-state="0" />
-    <editor active="true" />
+    <frame x="1446" y="207" width="760" height="914" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17422748" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.6565097" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32901555" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.026155187" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.34538463" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34102565" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.34408602" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -329,23 +337,31 @@
         <state relative-caret-position="-2001" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/util.py">
+    <entry file="file://A:/SISR/RCAN-master/RCAN_TestCode/code/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        <state>
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-39">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        <state relative-caret-position="9430">
+          <caret line="423" column="27" selection-start-line="423" selection-start-column="24" selection-end-line="423" selection-end-column="27" />
           <folding>
-            <element signature="e#241#251#0" expanded="true" />
-            <element signature="e#1059#3963#0" />
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2556">
+          <caret line="137" lean-forward="true" selection-start-line="137" selection-end-line="137" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>

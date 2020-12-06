@@ -1,21 +1,9 @@
-# list 에서 이미지 클릭 -> 그 이미지로 넘어감
-# 키보드 좌우 -> 이미지 넘기기
-# 키보드 위아래 -> change thr
-# txt 파일 형태러 각 이미지 마다 thr 값 저장
-# 목록 저장 사용자에게 파일명 입력 받아서
-# 창을 클릭하면 키보드 입력이되게 수정
-# v파일 불러온상태에서 또 불러오면 추가되도록 오류나지 않고
-# txt 파일이 있는 놈들은 표시해줌
-# img 위치와 thr 값을 tuple로 변경
-
-
-
 import sys
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5 import QtCore  # QtCore를 명시적으로 보여주기 위해
+from PyQt5 import QtCore
 
 from util import *
 #import cv2 as cv
@@ -37,14 +25,18 @@ class MyWindow(QWidget):
         self.image_paths = []
         self.setupUI()
         self.setFocusPolicy(Qt.ClickFocus)
-        self.rec_label_list = []
-        self.r_rect = r_rect
-        self.current_class = 0
-        self.rec_label = 0
+
         self.cur_rect_idx = 0
+
+        self.rec_label_list = []
+        self.rec_label = 0
+        self.r_rect = r_rect
         self.r_rect_stack = []
+
+        self.current_class = 0
         self.class_list = []
         self.class_stack = []
+
         self.scale_list = {}
 
     def keyPressEvent(self, e):
@@ -69,14 +61,14 @@ class MyWindow(QWidget):
             else:
                 return False
 
-
+        #Next image
         if e.key()== Qt.Key_Up:
             currentindex = self.listView.selectionModel().currentIndex().row()
             if currentindex == 0:
                 self.listView.setCurrentIndex(self.listView_model.index(self.listView.model().rowCount()-1,0))
             else :
                 self.listView.setCurrentIndex(self.listView_model.index(currentindex-1,0))
-
+        #Previous image
         elif e.key() == Qt.Key_Down:
             currentindex = self.listView.selectionModel().currentIndex().row()
             if currentindex == self.listView.model().rowCount()-1:
@@ -84,33 +76,32 @@ class MyWindow(QWidget):
             else :
                 self.listView.setCurrentIndex(self.listView_model.index(currentindex+1,0))
 
-        #if self.cur_rect_idx== len(self.r_rect_stack):
+
         if STATE != 'MODIFY':
             if e.key()==Qt.Key_Escape:
                 self.r_rect.__init__()
                 STATE = StateEnum.INIT
         elif STATE == 'MODIFY':
-            #elif self.cur_rect_idx < len(self.r_rect_stack):
-
-            if e.key()==Qt.Key_W:  # w
+            if e.key()==Qt.Key_W:  # move box up
                 self.r_rect.move_y(-1)
                 self.saveRECT()
-            elif e.key()==Qt.Key_S:  # s
+            elif e.key()==Qt.Key_S:  # move box down
                 self.r_rect.move_y(1)
                 self.saveRECT()
-            elif e.key()==Qt.Key_A:  # a
+            elif e.key()==Qt.Key_A:  # move box left
                 self.r_rect.move_x(-1)
                 self.saveRECT()
-            elif e.key()==Qt.Key_D:  # d
+            elif e.key()==Qt.Key_D:  # move box right
                 self.r_rect.move_x(1)
                 self.saveRECT()
-            elif e.key()==Qt.Key_F:  # F
+            elif e.key()==Qt.Key_F:  # rotate box clockwise
                 self.r_rect.rotate(1)
                 self.saveRECT()
-            elif e.key()==Qt.Key_R:  # R
+            elif e.key()==Qt.Key_R:  # rotate box counter clockwise
                 self.r_rect.rotate(-1)
                 self.saveRECT()
 
+            #delete box
             elif e.key()==Qt.Key_Delete:
                 del self.r_rect_stack[self.cur_rect_idx]
                 del self.class_stack[self.cur_rect_idx]
@@ -123,12 +114,11 @@ class MyWindow(QWidget):
                     self.r_rect.__init__()
                     STATE = StateEnum.INIT
 
+            # MODIFY MODE -> CREATE MODE
             elif e.key()==Qt.Key_Escape:
-                #MODIFY MODE -> CREATE MODE
                 self.cur_rect_idx = len( self.r_rect_stack)
                 self.r_rect.__init__()
                 STATE = StateEnum.INIT
-                #self.saveRECT()
 
         self.SetImage()
 
@@ -141,7 +131,6 @@ class MyWindow(QWidget):
         self.setWindowTitle("R-BBOX LABELING")
         self.setGeometry(300,300,1020,650)
 
-        #TODO GUI for class display and selection
         
         #load image button
         self.LoadImage = QPushButton("Load Image",self)
@@ -184,10 +173,10 @@ class MyWindow(QWidget):
 
 
 
+    #class selection
     def spinBoxChanged(self):
 
         self.current_class = self.spinBox.value()
-
         if STATE == 'MODIFY':
             self.class_stack[self.cur_rect_idx] = self.current_class
 
@@ -210,7 +199,6 @@ class MyWindow(QWidget):
 
         #load rects if exists
         else:
-
             self.r_rect_stack = self.rec_label_list[self.listView.currentIndex().row()]
             self.class_stack = self.class_list[self.listView.currentIndex().row()]
             # set first b_box from label as current rect
@@ -219,25 +207,19 @@ class MyWindow(QWidget):
             self.current_class = self.class_stack[0]
             self.cur_rect_idx = 0
 
-
-
-
-        #to create mode
+        #transition to create mode
         self.cur_rect_idx = len(self.r_rect_stack)
         r_rect.__init__()
         STATE = StateEnum.INIT
 
-
         #display image
         self.SetImage()
-
 
     # Image show on label
     def SetImage(self):
         global STATE
         showimg = copy.deepcopy(self.img)
         showimg=cv.cvtColor(showimg, cv.COLOR_BGR2RGB)
-
 
 
         if STATE == 'INIT' or STATE == 'POINTREADY':
@@ -284,7 +266,6 @@ class MyWindow(QWidget):
                 path_mod = str('imgs/')+path_split[-1]
                 f.write(f'{path_mod}\n')
                 label_path = path.replace(".jpg", ".txt").replace(".JPG",".txt")
-
 
                 if rec_label_stack:
                     f_label = open(label_path, 'w')
@@ -345,7 +326,7 @@ class MyWindow(QWidget):
 
                 self.scale_list[imgpath] = [width_scale, height_scale]
 
-                #label file 존재하면 초록색으로 표시, rect값 읽어서 저장
+                #if label file exists, read rect
                 if os.path.isfile(label_file):
                     f_label = open(label_file, 'r')
 
@@ -384,21 +365,16 @@ class MyWindow(QWidget):
                     self.rec_label_list.append([])
 
 
-        #to create rect mode
+        #transition to create rect mode
         self.cur_rect_idx = len(self.r_rect_stack)
         r_rect.__init__()
         STATE = StateEnum.INIT
 
-
         #show selected image
         if temp == -1 :
             self.listView.setCurrentIndex(self.listView_model.index(0, 0))
-
         else:
             self.listView.setCurrentIndex(self.listView_model.index(temp, 0))
-            #self.SetImage()
-
-        #self.SetImage()
 
         self.ListViewSelChange()
 
@@ -425,8 +401,6 @@ class MyWindow(QWidget):
                         self.r_rect.mp1 = [x, y]
                         self.r_rect.mp2 = [x, y]
 
-                        #when rect exists and mouse click in circle contiguous to rect, select rect closest to click
-
                         minidx = mouse_in_rect(self.r_rect_stack, x, y)
 
                         if minidx is not False:
@@ -447,15 +421,13 @@ class MyWindow(QWidget):
 
                     # MODIFY MODE
                     elif STATE == 'MODIFY':
-
                         minidx = mouse_in_rect(self.r_rect_stack, x, y)
-                        print(minidx)
-                        if minidx is not False:
-                            print('here')
 
+                        if minidx is not False:
                             self.cur_rect_idx = minidx
                             self.spinBox.setValue(self.class_stack[self.cur_rect_idx])
                             self.r_rect.load_r_rect(self.r_rect_stack[self.cur_rect_idx])
+
                 self.SetImage()
 
     def mouseMoveEvent(self, event):
@@ -502,8 +474,6 @@ if __name__ == "__main__":
     global STATE
     STATE = StateEnum.INIT
     r_rect = rot_rect()
-
-
 
     app = QApplication(sys.argv )
     window = MyWindow(r_rect)

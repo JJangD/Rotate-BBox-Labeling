@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['gui.py'],
-             pathex=['D:\\python programming\\rotatelabeling'],
+             pathex=['D:\\python programming\\Rotate-BBox-Labeling'],
              binaries=[],
              datas=[],
              hiddenimports=[],
